@@ -5,25 +5,39 @@
     <title>Greeter</title>
     <style>
       *{font-size:1.5em;}
+      #output{
+        font-family:'Comic Neue';
+      }
     </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
     <script>
     "use strict";
 
-    function sayHello(message) {
-      console.log("Hello");
+    function greet(message) {
+      //console.log("Hello");
       let name = document.querySelector("#input-firstname").value;
-      console.log(name);
+      //console.log(name);
 
       let output = document.querySelector("#output");
       output.innerHTML = `${message} ${name}. Thanks`;
+
+      if(!name){
+        alert("Fill in name!");
+      }
+
+
     }
 
     function init(){
       // 1 - get a reference to the button
     let button1 = document.querySelector("#button-hello");
+    let button2 = document.querySelector("#button-goodbye");
 
     // 2 - add a click event to button that calls a `sayHello` function
-    button1.addEventListener('click', function(){ sayHello("Hello"); });
+    button1.addEventListener('click', function(){ greet("Hello"); });
+    button2.addEventListener('click', function(){ greet("Goodbye"); });
     // 3 - create a `sayHello()` function
     // 3A - get name of person from the <input>
     // 3B - get a reference to the #output <p>
@@ -43,6 +57,7 @@
   <script>
     let output = document.querySelector("#output");
     output.style.background = "red";
+    output.style.color = "white";
   </script>
 
 </body>
