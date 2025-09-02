@@ -7,30 +7,43 @@
       *{font-size:1.5em;}
     </style>
     <script>
-        "use strict";
-        console.log("Hello World");
+    "use strict";
+
+    function sayHello(message) {
+      console.log("Hello");
+      let name = document.querySelector("#input-firstname").value;
+      console.log(name);
+
+      let output = document.querySelector("#output");
+      output.innerHTML = `${message} ${name}. Thanks`;
+    }
 
     function init(){
-    // 1 - get a reference to the button
-    let button = document.querySelector("Button");
-
-    console.log("Button");
-    console.log(button);
-    }
-    
+      // 1 - get a reference to the button
+    let button1 = document.querySelector("#button-hello");
 
     // 2 - add a click event to button that calls a `sayHello` function
+    button1.addEventListener('click', function(){ sayHello("Hello"); });
     // 3 - create a `sayHello()` function
     // 3A - get name of person from the <input>
     // 3B - get a reference to the #output <p>
     // 3C - update HTML of #output <p>
+    }
     
-            window.onload = init;
+    window.onload = init;
+    
     </script>
   </head>
 <body>
-  <button>Click Me!</button>
+  <button id="button-hello">Say Hello!</button>
+  <button id="button-goodbye">Say Goodbye!</button>
   <input id="input-firstname" placeholder="Type in your name">
   <p id="output">???</p>
+
+  <script>
+    let output = document.querySelector("#output");
+    output.style.background = "red";
+  </script>
+
 </body>
 </html>
