@@ -37,4 +37,4 @@ const isNumeric = (value) => {
 // Only these 2 functions are visible from the outside of this module aka "public"
 // All the other variables and functions of this module a "private" and
 // not visible from the outside
-export {sortAscending,isNumeric};
+export {sortAscending, isNumeric};
