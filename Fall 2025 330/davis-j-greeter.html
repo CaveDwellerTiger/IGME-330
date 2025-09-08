@@ -15,22 +15,34 @@
     <script>
     "use strict";
 
-    function greet(message) {
+    const greet = (message) => {
       //console.log("Hello");
-      let name = document.querySelector("#input-firstname").value;
+      let firstName = document.querySelector("#input-firstname").value;
+      let lastName = document.querySelector("#input-lastname").value;
       //console.log(name);
 
-      let output = document.querySelector("#output");
-      output.innerHTML = `${message} ${name}. Thanks`;
+      if(!lastName){
+        lastName = "Parker";
+      }
 
-      if(!name){
+      let capitalize = document.querySelector("#shout-check");
+      if(capitalize.checked){
+        message = message.toUpperCase();
+        firstName = firstName.toUpperCase();
+        lastName = lastName.toUpperCase();
+      }
+
+      let output = document.querySelector("#output");
+      output.innerHTML = `${message} ${firstName} ${lastName}`;
+
+      if(!firstName){
         alert("Fill in name!");
       }
 
 
     }
 
-    function init(){
+    const init = () => {
       // 1 - get a reference to the button
     let button1 = document.querySelector("#button-hello");
     let button2 = document.querySelector("#button-goodbye");
@@ -51,7 +63,12 @@
 <body>
   <button id="button-hello">Say Hello!</button>
   <button id="button-goodbye">Say Goodbye!</button>
-  <input id="input-firstname" placeholder="Type in your name">
+  <div>
+    <input type="checkbox" id="shout-check" name="shoutify" />
+    <label for="shoutify">Shoutify!</label>
+  </div>
+  <input id="input-firstname" placeholder="Type in your first name">
+  <input id="input-lastname" placeholder="Type in your last name">
   <p id="output">???</p>
 
   <script>
