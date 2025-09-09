@@ -34,7 +34,24 @@
 
         function loadJsonXHR(){
             console.log("Clicked btn1");
-            
+            const url = "./data/pet-names.json";
+
+			const xhr = new XMLHttpRequest();
+
+			xhr.onload = (e) => {
+				//console.log(e.target.responseText);
+				const text = e.target.responseText;
+
+				let json;
+				json = JSON.parse(text);
+				console.log(json);
+
+				const catnames = json.catnames;
+				console.log(catnames);
+			}
+
+			xhr.open("GET", url);
+			xhr.send();
 
         }
 
