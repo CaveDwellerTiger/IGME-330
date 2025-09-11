@@ -21,7 +21,7 @@
 	<button id="json-button">Load Regular Json Data</button>
     <button id="uuid-json-button">Load UUID Json Data</button>
 
-	<p id="output">Click button to load</p>
+	<div id="output">Click button to load</div>
 
     <script>
 
@@ -34,7 +34,7 @@
 
         function loadJsonXHR(){
             console.log("Clicked btn1");
-            const url = "./data/pet-names.json";
+            const url = "./data/pet-names-uuid.json";
 
 			const xhr = new XMLHttpRequest();
 
@@ -44,10 +44,56 @@
 
 				let json;
 				json = JSON.parse(text);
-				console.log(json);
 
-				const catnames = json.catnames;
-				console.log(catnames);
+				//console.log(json);
+				for (let key in json){
+					console.log(`Key: ${key}`);
+					console.log(`Title: ${item.title}`);
+					console.log(`Type: ${item.type}`);
+					console.log(`Popularity: ${item.popularity}`);
+					console.log(`Names: ${item.nameList.join(', ')}`);
+					console.log('---');
+				}
+
+				//console.log(catnames);
+
+				//let html = "";
+				//for (let i = 0; i <ol catnames.length; i++){
+				//	html += `<li>${catnames[i]}</li>`;
+				//}
+				//output.innerHTML += `<ol>${html}</ol>`;
+
+				// let unorderedList = document.createElement("ol");
+
+				// console.log(unorderedList);
+				// for(let name of catnames){
+				// 	let nameItem = document.createElement("li");
+				// 	let nameText = document.createTextNode(name);
+				// 	nameItem.appendChild(nameText);
+
+				// 	unorderedList.appendChild(nameItem);
+				// 	//console.log(nameItem);
+				// }
+
+				// console.log(unorderedList);
+
+				//function processName(name){
+				//	console.log(name);
+				//}
+				//catnames.map(processName)
+
+				//let html = "<ol>";
+				//catnames.map( name=> {
+				//	html += `<li>${name}</li>`;
+				//	console.log(name)
+				//});
+				//html += "</ol>";
+				//output.innerHTML = html;
+
+				//let html = catnames.map( (name)=>{ return `<li>${name}</li>`}).join("");
+
+				//let html = "<ol>" + catnames.map( name=> `<li>${name}</li>`).join("") + "</ol>";
+				//output.innerHTML = html;
 			}
 
 			xhr.open("GET", url);
