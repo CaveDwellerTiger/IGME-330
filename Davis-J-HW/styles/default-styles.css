@@ -6,7 +6,7 @@ body{
     font-size:200%;
 }
 
-#myButton{
+#my-button{
     width: 200px;
     height: 50pt;
     font-size: 15pt;
@@ -84,7 +84,7 @@ body{
         background-color: #23D160;
     }
 
-    #myButton{
+    #my-button{
         width: 300px;
         height: 75pt;
         font-size: 1.5rem;
