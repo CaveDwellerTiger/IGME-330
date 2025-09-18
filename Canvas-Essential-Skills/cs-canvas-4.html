@@ -29,13 +29,17 @@
 		window.onload = init;
 	
 		let ctx;
+		let paused = false;
+		let canvas;
+		let createRectangles = true;
+		let running = false;
 
 		function init(){
 			console.log("page loaded!");
 			// #2 Now that the page has loaded, start drawing!
 			
 			// A - `canvas` variable points at <canvas> tag
-			let canvas = document.querySelector("canvas");
+			canvas = document.querySelector("canvas");
 			
 			// B - the `ctx` variable points at a "2D drawing context"
 			ctx = canvas.getContext("2d");
@@ -123,6 +127,24 @@
 			
 			// D - fill a rectangle with the current fill color
 			//ctx.fillRect(20,20,600,440);
+
+			setupUI();
+			//update();
+		}
+
+		function setupUI(){
+			// TODO convert into arrow function
+			document.querySelector("#btnPlay").onclick = function(){
+				if (!running){
+					paused = false;
+					running = true;
+					update();
+				}
+			}
+			document.querySelector("#btnPause").onclick = function(){
+				running = false;
+				paused = true;
+			}
 		}
 
 		function drawRandomRect(ctx){
@@ -138,6 +160,7 @@
 		}
 
 		function update(){
+			if (paused) { return; }
 			requestAnimationFrame(update);
 			drawRandomRect(ctx);
 		}
@@ -167,8 +190,8 @@
 	</section>
 	<section>
   		<span>
-    	<input type="checkbox" id="cbRectangles" checked>
-    	<label for="cbRectangles">Rectangles</label>
+    		<input type="checkbox" id="cbRectangles" checked>
+    		<label for="cbRectangles">Rectangles</label>
   		</span>
 	</section>
 	<section>
