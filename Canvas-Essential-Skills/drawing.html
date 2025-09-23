@@ -6,12 +6,66 @@
     <title>Document</title>
 </head>
 <body>
-    <canvas width="640" height="480"></canvas>
+    <canvas width="640" height="480" style="background-color: orange"></canvas>
 
     <script>
-        let ctx = document.querySeletor("canvas").getContext('2d');
+        let ctx = document.querySelector("canvas").getContext('2d');
 
         ctx.save();
+
+        ctx.strokeStyle = "red";
+        ctx.fillStyle = "yellow";
+        ctx.lineWidth = 10;
+        ctx.setLineDash([5, 15]);
+
+        //rectangle
+        // ctx.beginPath();
+        // ctx.rect(20, 20, 200, 200);
+        // ctx.closePath();
+        // ctx.fill();
+        // ctx.stroke();
+
+        //circle
+        // ctx.beginPath();
+        // ctx.arc(20, 20, 125, Math.PI * 2, 0, false);
+        // ctx.closePath();
+        // ctx.stroke();
+        // ctx.fill();
+        
+        //ring
+        // ctx.beginPath();
+        // ctx.arc(200, 200, 125, 0, Math.PI * 2, false);
+        // ctx.arc(200, 200, 100, 0, Math.PI * 2, true);
+        // ctx.closePath();
+        // ctx.stroke();
+        // ctx.fill();
+
+        //line
+        // ctx.beginPath();
+        // ctx.moveTo(20, 100);
+        // ctx.lineTo(620, 100);
+        // ctx.closePath();
+        // ctx.stroke();
+
+        //triangle
+        // ctx.beginPath();
+        // ctx.moveTo(20, 100);
+        // ctx.lineTo(620, 100);
+        // ctx.lineTo(340, 400);
+        // ctx.closePath();
+        // ctx.stroke();
+        // ctx.fill();
+
+        //curvilinear shape
+        ctx.beginPath();
+        ctx.moveTo(50, 100);
+        ctx.arcTo(300, 425, 550, 100, 80);
+        ctx.lineTo(550, 100);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.fill();
+        
+
 
         ctx.restore();
     </script>
