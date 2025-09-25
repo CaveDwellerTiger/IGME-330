@@ -32,6 +32,8 @@
 		let paused = false;
 		let canvas;
 		let createRectangles = true;
+		let createArcs = false;
+		let createLines = false;
 		let running = false;
 
 		function init(){
@@ -122,6 +124,12 @@
 			ctx.closePath();
 			ctx.stroke();
 
+			// --- cs-canvas-5 stuff ---
+			//drawArc(ctx,100,100,50,"red");
+			drawArc(ctx,100,100,50,"green",10,"pink",0,Math.PI);
+			drawLine(ctx,0,100,640,300);
+			drawLine(ctx,0,100,640,300,10,"coral");
+
 			// C - all fill operations are now in red
 			ctx.fillStyle = "red"; 
 			
@@ -146,16 +154,38 @@
 				paused = true;
 			}
 
+			document.querySelector("#btn-clear").onclick = function(){
+				ctx.clearRect(0, 0, 640, 480);
+				ctx.fillStyle = "red";
+				ctx.fillRect(20, 20, 600, 440);
+			}
+
 			canvas.onclick = canvasClicked;
 
 			document.querySelector("#cbRectangles").onclick = function(e){
 				createRectangles = e.target.checked;
 			};
+
+			document.querySelector("#cbArcs").onclick = function(e){
+				createArcs = e.target.checked;
+			}
+
+			document.querySelector("#cbLines").onclick = function(e){
+				createLines = e.target.checked;
+			}
 		}
 
 		function drawRandomRect(ctx){
 			//drawRectangle(ctx,x,y,width,height,fillStyle="black",lineWidth=0,strokeStyle="black")
-			drawRectangle(ctx, getRandomInt(0, 640), getRandomInt(0, 480), getRandomInt(0, 90), getRandomInt(0, 90), getRandomColor(), getRandomInt(2, 12), getRandomColor())
+			drawRectangle(ctx, getRandomInt(0, 640), getRandomInt(0, 480), getRandomInt(0, 90), getRandomInt(0, 90), getRandomColor(), getRandomInt(2, 12), getRandomColor());
+		}
+
+		function drawRandomArc(ctx){
+			drawArc(ctx, getRandomInt(0, 640), getRandomInt(0, 480), getRandomInt(0, 45), getRandomColor(), getRandomInt(2, 12), getRandomColor(), getRandomInt(0, Math.PI), getRandomInt(Math.PI, Math.PI * 2));
+		}
+
+		function drawRandomLine(ctx){
+			drawLine(ctx, getRandomInt(0, 640), getRandomInt(0, 480), getRandomInt(0, 640), getRandomInt(0, 480), getRandomInt(2, 12), getRandomColor());
 		}
 
 		function canvasClicked(e){
@@ -189,10 +219,40 @@
 			ctx.restore();
 		}
 
+		function drawArc(ctx, x, y, radius, fillStyle="black", lineWidth=0, strokeStyle="black", startAngle = 0, endAngle = Math.PI * 2){
+			ctx.save();
+			ctx.fillStyle = fillStyle;
+			ctx.beginPath();
+			ctx.arc(x, y, radius, startAngle, endAngle, false);
+			ctx.fill();
+			if (lineWidth > 0){
+				ctx.lineWidth = lineWidth;
+				ctx.strokeStyle = strokeStyle;
+				ctx.stroke();
+			}
+			ctx.closePath();
+			ctx.restore();
+		}
+
+		function drawLine(ctx, x1, y1, x2, y2, lineWidth=1, strokeStyle="black"){
+			ctx.save();
+			ctx.lineWidth = lineWidth;
+			ctx.strokeStyle = strokeStyle;
+			ctx.save();
+			ctx.beginPath();
+			ctx.moveTo(x1, y1);
+			ctx.lineTo(x2, y2);
+			ctx.closePath();
+			ctx.stroke();
+			ctx.restore();
+		}
+
 		function update(){
 			if (paused) { return; }
 			requestAnimationFrame(update);
 			if (createRectangles) drawRandomRect(ctx);
+			if (createArcs) drawRandomArc(ctx);
+			if (createLines) drawRandomLine(ctx);
 		}
 
 		//UTILITY FUNCTION START
@@ -217,11 +277,16 @@
 	<section>
   		<button id="btnPlay">Play</button>
   		<button id="btnPause">Pause</button>
+		<button id="btn-clear">Clear</button>
 	</section>
 	<section>
   		<span>
     		<input type="checkbox" id="cbRectangles" checked>
     		<label for="cbRectangles">Rectangles</label>
+			<input type="checkbox" id="cbArcs">
+			<label for="cbArcs">Circles</label>
+			<input type="checkbox" id="cbLines">
+			<label for="cbLines">Lines</label>
   		</span>
 	</section>
 	<section>
