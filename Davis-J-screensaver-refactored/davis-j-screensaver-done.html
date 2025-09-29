@@ -26,7 +26,6 @@
 		"use strict";
 		
 		// #1 call the `init` function after the pages loads
-		window.onload = init;
 	
 		let ctx;
 		let paused = false;
@@ -36,7 +35,7 @@
 		let createLines = false;
 		let running = false;
 
-		function init(){
+		const init = () => {
 			console.log("page loaded!");
 			// #2 Now that the page has loaded, start drawing!
 			
@@ -172,21 +171,21 @@
 			//update();
 		}
 
-		function setupUI(){
+		const setupUI = () => {
 			// TODO convert into arrow function
-			document.querySelector("#btnPlay").onclick = function(){
+			document.querySelector("#btn-play").onclick = () => {
 				if (!running){
 					paused = false;
 					running = true;
 					update();
 				}
 			}
-			document.querySelector("#btnPause").onclick = function(){
+			document.querySelector("#btn-pause").onclick = () => {
 				running = false;
 				paused = true;
 			}
 
-			document.querySelector("#btn-clear").onclick = function(){
+			document.querySelector("#btn-clear").onclick = () => {
 				ctx.clearRect(0, 0, 640, 480);
 				ctx.fillStyle = "red";
 				ctx.fillRect(20, 20, 600, 440);
@@ -194,33 +193,33 @@
 
 			canvas.onclick = canvasClicked;
 
-			document.querySelector("#cbRectangles").onclick = function(e){
+			document.querySelector("#cb-rectangles").onclick = (e) => {
 				createRectangles = e.target.checked;
 			};
 
-			document.querySelector("#cbArcs").onclick = function(e){
+			document.querySelector("#cb-arcs").onclick = (e) => {
 				createArcs = e.target.checked;
 			}
 
-			document.querySelector("#cbLines").onclick = function(e){
+			document.querySelector("#cb-lines").onclick = (e) => {
 				createLines = e.target.checked;
 			}
 		}
 
-		function drawRandomRect(ctx){
+		const drawRandomRect = (ctx) => {
 			//drawRectangle(ctx,x,y,width,height,fillStyle="black",lineWidth=0,strokeStyle="black")
 			drawRectangle(ctx, getRandomInt(0, 640), getRandomInt(0, 480), getRandomInt(0, 90), getRandomInt(0, 90), getRandomColor(), getRandomInt(2, 12), getRandomColor());
 		}
 
-		function drawRandomArc(ctx){
+		const drawRandomArc = (ctx) => {
 			drawArc(ctx, getRandomInt(0, 640), getRandomInt(0, 480), getRandomInt(0, 45), getRandomColor(), getRandomInt(2, 12), getRandomColor(), getRandomInt(0, Math.PI), getRandomInt(Math.PI, Math.PI * 2));
 		}
 
-		function drawRandomLine(ctx){
+		const drawRandomLine = (ctx) => {
 			drawLine(ctx, getRandomInt(0, 640), getRandomInt(0, 480), getRandomInt(0, 640), getRandomInt(0, 480), getRandomInt(2, 12), getRandomColor());
 		}
 
-		function canvasClicked(e){
+		const canvasClicked = (e) => {
 			let rect = e.target.getBoundingClientRect();
 			let mouseX = e.clientX - rect.x;
 			let mouseY = e.clientY - rect.y;
@@ -235,7 +234,7 @@
 		}
 
 		// canvas helpers
-		function drawRectangle(ctx,x,y,width,height,fillStyle="black",lineWidth=0,strokeStyle="black"){
+		const drawRectangle = (ctx,x,y,width,height,fillStyle="black",lineWidth=0,strokeStyle="black") => {
 			ctx.save();
 			ctx.fillStyle = fillStyle;
 			ctx.beginPath();
@@ -250,7 +249,7 @@
 			ctx.restore();
 		}
 
-		function drawArc(ctx, x, y, radius, fillStyle="black", lineWidth=0, strokeStyle="black", startAngle = 0, endAngle = Math.PI * 2){
+		const drawArc = (ctx, x, y, radius, fillStyle="black", lineWidth=0, strokeStyle="black", startAngle = 0, endAngle = Math.PI * 2) => {
 			ctx.save();
 			ctx.fillStyle = fillStyle;
 			ctx.beginPath();
@@ -265,7 +264,7 @@
 			ctx.restore();
 		}
 
-		function drawLine(ctx, x1, y1, x2, y2, lineWidth=1, strokeStyle="black"){
+		const drawLine = (ctx, x1, y1, x2, y2, lineWidth=1, strokeStyle="black") => {
 			ctx.save();
 			ctx.lineWidth = lineWidth;
 			ctx.strokeStyle = strokeStyle;
@@ -278,7 +277,7 @@
 			ctx.restore();
 		}
 
-		function update(){
+		const update = () => {
 			if (paused) { return; }
 			requestAnimationFrame(update);
 			if (createRectangles) drawRandomRect(ctx);
@@ -288,16 +287,19 @@
 
 		//UTILITY FUNCTION START
 		// handy helper functions!
-			function getRandomColor(){
-  				function getByte(){
+			const getRandomColor = () =>{
+  				const getByte = () => {
     				return 55 + Math.round(Math.random() * 200);
   				}
-  				return "rgba(" + getByte() + "," + getByte() + "," + getByte() + ",.8)";
+  				return `rgba( ${getByte()} , ${getByte()} , ${getByte()} ,.8)`;
 			}
 
-			function getRandomInt(min, max) {
+			const getRandomInt = (min, max) => {
   				return Math.floor(Math.random() * (max - min + 1)) + min;
 			}
+
+		// #Last Number - Declare window.onload at the bottom, since init is now an arrow function
+		window.onload = init;
 	</script>
 </head>
 <body>
@@ -306,18 +308,18 @@
 	</canvas>
 
 	<section>
-  		<button id="btnPlay">Play</button>
-  		<button id="btnPause">Pause</button>
+  		<button id="btn-play">Play</button>
+  		<button id="btn-pause">Pause</button>
 		<button id="btn-clear">Clear</button>
 	</section>
 	<section>
   		<span>
-    		<input type="checkbox" id="cbRectangles" checked>
-    		<label for="cbRectangles">Rectangles</label>
-			<input type="checkbox" id="cbArcs">
-			<label for="cbArcs">Circles</label>
-			<input type="checkbox" id="cbLines">
-			<label for="cbLines">Lines</label>
+    		<input type="checkbox" id="cb-rectangles" checked>
+    		<label for="cb-rectangles">Rectangles</label>
+			<input type="checkbox" id="cb-arcs">
+			<label for="cb-arcs">Circles</label>
+			<input type="checkbox" id="cb-lines">
+			<label for="cb-lines">Lines</label>
   		</span>
 	</section>
 	<section>
