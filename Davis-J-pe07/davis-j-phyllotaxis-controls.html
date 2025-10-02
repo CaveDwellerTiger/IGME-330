@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Sine Start</title>
+	<style>canvas{ border: 1px solid black; }</style>
+	<script>
+	"use strict";
+	const canvasWidth = 400, canvasHeight = 300;
+	let ctx;
+    let n = 0;
+    const c = 12;
+    let divergence = 183.5;
+    const fps = 60;
+    let radius = 2;
+
+    window.onload = init;
+
+	function init(){
+		ctx = canvas.getContext("2d");
+		canvas.width = canvasWidth;
+		canvas.height = canvasHeight;
+		ctx.fillRect(0,0,canvasWidth,canvasHeight);
+
+        document.querySelector("#restart-btn").onclick = restart;
+        document.querySelector("#ctrl-divergence").onchange = divergenceCtrl;
+
+        loop();
+	}
+
+    function loop(){
+        setTimeout(loop, 1000/fps);
+        // each frame draw a new dot
+        // `a` is the angle
+        // `r` is the radius from the center (e.g. "Pole") of the flower
+        // `c` is the "padding/spacing" between the dots
+        let a = n * dtr(divergence);
+        let r = c * Math.sqrt(n);
+        //console.log(a,r);
+        // now calculate the `x` and `y`
+        let x = r * Math.cos(a) + canvasWidth / 2;
+        let y = r * Math.sin(a) + canvasHeight / 2;
+
+        let aDegrees = (n * divergence) % 361;
+        let color = `hsl(${aDegrees},100%,50%)`;
+        drawCircle(ctx, x, y, radius, color);
+        
+
+        n++;
+        radius += 0.1;
+    }
+
+	// helpers
+	function dtr(degrees){
+		return degrees * (Math.PI/180);
+	}
+
+	function drawCircle(ctx,x,y,radius,color){
+		ctx.save();
+		ctx.fillStyle = color;
+		ctx.beginPath();
+		ctx.arc(x,y,radius,0,Math.PI * 2);
+		ctx.closePath();
+		ctx.fill();
+		ctx.restore();
+	}
+
+    function restart(){
+        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+        n = 0;
+        radius = 2;
+    }
+
+    // handlers
+    function divergenceCtrl(e){
+        divergence = parseFloat(e.target.value);
+        restart();
+    }
+
+	</script>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<br>
+<button type="button" id="restart-btn">Restart</button>
+<div id="controls">
+	<label for="ctrl-divergence">Divergence Angle</label>
+	<select id="ctrl-divergence">
+		<option value="137.1">137.1</option>
+		<option value="142.3">142.3</option>
+		<option value="154.5">154.5</option>
+		<option value="177.7">177.7</option>
+		<option value="183.5" selected>183.5</option>
+	</select>
+</div>
+<p>
+    I used the professor's Divergence Control feature to allow the user to choose from
+    <br>
+    five different Divergence value options. Selecting one causes the screen to erase
+    <br>
+    itself, start new, and draw a phyllotaxis spiral with the selected Divergence Value
+</p>
+
+</body>
+</html>
