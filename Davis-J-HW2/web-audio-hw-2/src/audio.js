@@ -3,7 +3,7 @@ let audioCtx;
 
 // **These are "private" properties - these will NOT be visible outside of this module (i.e. file)**
 // 2 - WebAudio nodes that are part of our WebAudio audio routing graph
-let element, sourceNode, analyserNode, gainNode;
+let element, sourceNode, biquadFilter, lowShelfBiquadFilter, analyserNode, gainNode;
 
 // 3 - here we are faking an enumeration
 const  DEFAULTS = Object.freeze({
@@ -31,11 +31,21 @@ loadSoundFile(filePath);
 // 4 - create an a source node that points at the <audio> element
 sourceNode = audioCtx.createMediaElementSource(element);
 
-// 5 - create an analyser node
+// 5 - create a BiquadFilterNode
+// https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode
+biquadFilter = audioCtx.createBiquadFilter();
+biquadFilter.type = "highshelf";
+// biquadFilter.frequency.setValueAtTime(1000, audioCtx.currentTime);
+// biquadFilter.gain.setValueAtTime(25, audioCtx.currentTime);
+
+lowShelfBiquadFilter = audioCtx.createBiquadFilter();
+lowShelfBiquadFilter.type = "lowshelf";
+
+// 6 - create an analyser node
 analyserNode = audioCtx.createAnalyser();// note the UK spelling of "Analyser"
 
 /*
-// 6
+// 7
 We will request DEFAULTS.numSamples number of samples or "bins" spaced equally 
 across the sound spectrum.
 
@@ -47,12 +57,14 @@ the amplitude of that frequency.
 // fft stands for Fast Fourier Transform
 analyserNode.fftSize = DEFAULTS.numSamples;
 
-// 7 - create a gain (volume) node
+// 8 - create a gain (volume) node
 gainNode = audioCtx.createGain();
 gainNode.gain.value = DEFAULTS.gain;
 
-// 8 - connect the nodes - we now have an audio graph
-sourceNode.connect(analyserNode);
+// 9 - connect the nodes - we now have an audio graph
+sourceNode.connect(biquadFilter);
+biquadFilter.connect(lowShelfBiquadFilter);
+lowShelfBiquadFilter.connect(analyserNode);
 analyserNode.connect(gainNode);
 gainNode.connect(audioCtx.destination);
 }
@@ -75,4 +87,4 @@ function setVolume(value){
 }
 
 export {audioCtx, setupWebaudio, playCurrentSound, pauseCurrentSound, loadSoundFile, setVolume,
-        analyserNode};
+        analyserNode, biquadFilter, lowShelfBiquadFilter};

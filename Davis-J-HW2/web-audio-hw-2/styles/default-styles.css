@@ -11,6 +11,9 @@ canvas {
   background: #fafafa;
 }
 
+span{margin-right:2em;}
+#slider-distortion{position:relative;top:.7em;}
+
 #controls{
   margin-left: 1rem;
 }

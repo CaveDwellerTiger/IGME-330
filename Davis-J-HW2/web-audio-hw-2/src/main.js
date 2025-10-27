@@ -18,6 +18,9 @@ const drawParams = {
   showNoise     : true
 };
 
+let highshelf = false;
+let lowshelf = false;
+
 // 1 - here we are faking an enumeration
 const DEFAULTS = Object.freeze({
 	sound1  :  "media/New Adventure Theme.mp3"
@@ -104,8 +107,46 @@ const setupUI = (canvasElement) => {
   document.querySelector("#cb-noise").onclick = (e) => {
       drawParams.showNoise = e.target.checked;
   }
-	
+
+  // F - setup highshelf checkbox
+  // I. set the initial state of the high shelf checkbox
+  document.querySelector('#cb-highshelf').checked = highshelf; // `highshelf` is a boolean we will declare in a second
+  document.querySelector('#cb-lowshelf').checked = lowshelf; // `highshelf` is a boolean we will declare in a second
+  
+  // II. change the value of `highshelf` every time the high shelf checkbox changes state
+  document.querySelector('#cb-highshelf').onchange = e => {
+    highshelf = e.target.checked;
+    toggleHighshelf(); // turn on or turn off the filter, depending on the value of `highshelf`!
+  };
+
+  document.querySelector('#cb-lowshelf').onchange = e => {
+    lowshelf = e.target.checked;
+    toggleLowshelf(); // turn on or turn off the filter, depending on the value of `highshelf`!
+  };
+  
+  // III. 
+  toggleHighshelf(); // when the app starts up, turn on or turn off the filter, depending on the value of `highshelf`!
+	toggleLowshelf();
+
 } // end setupUI
+
+const toggleHighshelf = () => {
+  if(highshelf){
+    audio.biquadFilter.frequency.setValueAtTime(1000, audio.audioCtx.currentTime); // we created the `biquadFilter` (i.e. "treble") node last time
+    audio.biquadFilter.gain.setValueAtTime(25, audio.audioCtx.currentTime);
+  }else{
+    audio.biquadFilter.gain.setValueAtTime(0, audio.audioCtx.currentTime);
+  }
+}
+
+const toggleLowshelf = () => {
+  if(lowshelf){
+    audio.lowShelfBiquadFilter.frequency.setValueAtTime(1000, audio.audioCtx.currentTime);
+    audio.lowShelfBiquadFilter.gain.setValueAtTime(15, audio.audioCtx.currentTime);
+  }else{
+    audio.lowShelfBiquadFilter.gain.setValueAtTime(0, audio.audioCtx.currentTime);
+  }
+}
 
 const loop = () => {
 /* NOTE: This is temporary testing code that we will delete in Part II */
