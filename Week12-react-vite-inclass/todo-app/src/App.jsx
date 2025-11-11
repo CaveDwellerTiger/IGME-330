@@ -1,35 +1,82 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useEffect } from 'react'
+import { saveTodos, loadTodos } from './storage'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [todos, setTodos] = useState(() => {
+    const saved = loadTodos();
+    if (saved.length > 0) {
+      return saved;
+    }
+    return [
+      { id: 1, text: 'Learn React' },
+      { id: 2, text: 'Build a Todo App' },
+      { id: 3, text: 'Master useState' }
+    ];
+  });
+
+  const [newTodo, setNewTodo] = useState('');
+
+  const deleteTodo = (id) => {
+    setTodos(todos.filter(todo => todo.id !== id));
+  };
+
+  useEffect(() => {
+    saveTodos(todos);
+  }, [todos]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  
+    if (newTodo.trim() === '') {
+      return;
+    }
+  
+    const todo = {
+      id: Date.now(),
+      text: newTodo
+    };
+  
+    setTodos([...todos, todo]);
+    setNewTodo('');
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="app">
+      <header>
+        <h1>My Todo List</h1>
+      </header>
+      <main>
+        <form onSubmit={handleSubmit} className="add-form">
+          <input 
+            type="text"
+            value={newTodo}
+            onChange={(e) => setNewTodo(e.target.value)}
+            placeholder="Add a new todo..."
+            className="todo-input"
+          />
+          <button type="submit" className="add-btn">Add</button>
+        </form>
+        <ul className="todo-list">
+          {todos.map(todo => (
+            <li key={todo.id} className="todo-item">
+              <span>{todo.text}</span>
+              <button 
+                className="delete-btn"
+                onClick={() => deleteTodo(todo.id)}
+              >
+                Delete
+              </button>
+            </li>
+          ))}
+        </ul>
+      </main>
+      <footer>
+        <p>&copy; 2024 Ace Coder</p>
+      </footer>
+    </div>
+  );
 }
+
 
 export default App
