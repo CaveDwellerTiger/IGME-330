@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  entry: './web-audio-hw-2/src/main.js',
+  entry: './web-audio-hw-2/src/main.ts',
   module: {
     rules: [
       {
