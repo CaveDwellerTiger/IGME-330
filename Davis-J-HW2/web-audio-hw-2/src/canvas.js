@@ -101,6 +101,30 @@ function draw(params={}){
         }
         ctx.restore();
     }
+    // 6 - Draw Squares
+    if (params.showSquares){
+        let maxWidth = canvasWidth / 8;
+        let maxHeight = canvasHeight / 6;
+        let maxX = 80;
+        let maxY = 50;
+        ctx.save();
+        ctx.globalAlpha = 0.5;
+        for(let i=0; i < audioData.length; i++){
+            let percent = audioData[i] / 255;
+
+            let squareWidth = percent * maxWidth;
+            let squareHeight = percent * maxHeight;
+            let squareX = percent * maxX;
+            let squareY = percent * maxY;
+            ctx.beginPath();
+            ctx.fillStyle = utils.makeColor(0, 0, 255, .10 - percent / 10.0);
+            ctx.rect(squareX, squareY, squareWidth, squareHeight);
+            ctx.rect((canvasWidth - squareX) - squareX, squareY, squareWidth, squareHeight);
+            ctx.fill();
+            ctx.closePath();
+        }
+        ctx.restore();
+    }
 }
 
 export {setupCanvas,draw};

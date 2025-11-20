@@ -15,6 +15,7 @@ const drawParams = {
   showGradient  : true,
   showBars      : true,
   showCircles   : true,
+  showSquares   : true,
   showNoise     : true
 };
 
@@ -104,6 +105,10 @@ const setupUI = (canvasElement) => {
       drawParams.showCircles = e.target.checked;
   }
 
+  document.querySelector("#cb-squares").onclick = (e) => {
+      drawParams.showSquares = e.target.checked;
+  }
+
   document.querySelector("#cb-noise").onclick = (e) => {
       drawParams.showNoise = e.target.checked;
   }
@@ -150,7 +155,7 @@ const toggleLowshelf = () => {
 
 const loop = () => {
 /* NOTE: This is temporary testing code that we will delete in Part II */
-	requestAnimationFrame(loop);
+	setTimeout(loop);
   canvas.draw(drawParams);
 	// 1) create a byte array (values of 0-255) to hold the audio data
 	// normally, we do this once when the program starts up, NOT every frame
