@@ -57,7 +57,7 @@ const init = () => {
 	ajax.downloadFile("data/parks.geojson", (str) => {
 		geojson = JSON.parse(str);
 		console.log(geojson);
-		map.addMarkersToMap(geojson, showFeatureDetails);
+		map.addMarkersToMap(geojson, () => {showFeatureDetails(id)});
 		setupUI();
 	});
 };
