@@ -39,8 +39,6 @@ const initMap = (center) => {
 	map.addControl(new mapboxgl.NavigationControl({showCompass:false}));
 };
 
-const clickHandler = (id) => alert(`${id} was clicked!`);
-
 const addMarker = (feature, className, clickHandler) => {
 	// A. Create a map marker using feature (i.e. "Park") data
 	// - the marker is a <div>
