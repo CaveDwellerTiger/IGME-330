@@ -1,6 +1,7 @@
 import * as map from "./map.js";
 import * as ajax from "./ajax.js";
 import * as storage from "./storage.js";
+import * as parks from "./parks-viewer.js";
 
 // I. Variables & constants
 // NB - it's easy to get [longitude,latitude] coordinates with this tool: http://geojson.io/
@@ -9,6 +10,7 @@ const lnglatUSA = [-98.5696, 39.8282];
 let favoriteIds = [];
 let geojson;
 let currentId;
+let currentTitle;
 
 
 // II. Functions
@@ -57,6 +59,7 @@ const getFeatureById = (id) => {
 
 const showFeatureDetails = (id) => {
 	const feature = getFeatureById(id);
+	currentTitle = feature.properties.title;
 	document.querySelector("#details-1").innerHTML = `Info for ${feature.properties.title}`;
 
 	let addressHtml = `<b>Address:</b> ${feature.properties.address}`;
@@ -118,6 +121,7 @@ const addToFavorites = (id) => {
 	}
 	favoriteIds.push(id);
 	storage.writeToLocalStorage("markers", favoriteIds);
+	parks.writeFavNameData(currentTitle, id);
 	refreshFavorites();
 }
 
